@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cricketta.API", "Cricketta.API\Cricketta.API.csproj", "{B4AD0536-866C-4668-85F8-F196011F4E80}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cricketta.Data", "Cricketta.Data\Cricketta.Data.csproj", "{97518266-9807-4D8A-90C1-F93262478494}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{B4AD0536-866C-4668-85F8-F196011F4E80}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4AD0536-866C-4668-85F8-F196011F4E80}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4AD0536-866C-4668-85F8-F196011F4E80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97518266-9807-4D8A-90C1-F93262478494}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97518266-9807-4D8A-90C1-F93262478494}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97518266-9807-4D8A-90C1-F93262478494}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97518266-9807-4D8A-90C1-F93262478494}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

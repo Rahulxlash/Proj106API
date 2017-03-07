@@ -51,7 +51,7 @@ namespace Cricketta.API
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            container.Dispose();
         }
     }
 }

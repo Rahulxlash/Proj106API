@@ -15,12 +15,13 @@ namespace Cricketta.API
         public static void Register(HttpConfiguration config)
         {
             config.MapHttpAttributeRoutes();
-
+          
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+            config.Routes.MapHttpRoute("DefaultApiWithAction", "Api/{controller}/{action}/{value}");
 
             var jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();
             jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();

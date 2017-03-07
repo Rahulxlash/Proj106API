@@ -2,6 +2,7 @@
 using Cricketta.Data.Base;
 using Cricketta.Data.Data;
 using Cricketta.Data.Model;
+using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,13 @@ using System.Web.Http;
 
 namespace Cricketta.API.Controllers
 {
+    [RoutePrefix("User")]
     public class UserController : ApiController
     {
-        private IUserRepository userRepository;
-        private IUnitofWork unitofWork;
+        [Dependency]
+        public IUserRepository userRepository {get;set;}
+        [Dependency]
+        public IUnitofWork unitofWork { get; set; }
 
         public UserController(IUnitofWork unitofWork, IUserRepository userRepository)
         {
@@ -26,6 +30,24 @@ namespace Cricketta.API.Controllers
         public async Task<IHttpActionResult> Get()
         {
             return Ok(userRepository.GetAll());
+        }
+
+        public async Task<IHttpActionResult> Get(int Id)
+        {
+            var user = userRepository.GetById(Id);
+            return Ok(user);
+        }
+
+        public async Task<IHttpActionResult> GetByFBId(string value)
+        {
+            var user = userRepository.GetMany(u => u.FacebookId == value).FirstOrDefault();
+            return Ok(user);
+        }
+
+        public async Task<IHttpActionResult> GetByUserName(string value)
+        {
+            var user = userRepository.GetMany(u => u.UserName.Trim().ToLower() == value.ToLower()).FirstOrDefault();
+            return Ok(user);
         }
 
         public async Task<IHttpActionResult> Post(UserModel user)

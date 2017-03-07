@@ -17,7 +17,7 @@ namespace Cricketta.Data.Base
 
         public CrickContext Get()
         {
-            return dbContext ?? (new CrickContext());
+            return dbContext ?? (dbContext = new CrickContext());
         }
 
         public void Dispose()

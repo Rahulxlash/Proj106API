@@ -8,7 +8,7 @@ namespace Cricketta.API.Models
     public class UserModel
     {
         public string UserName { get; set; }
-        public int FacebookId { get; set; }
+        public string FacebookId { get; set; }
         public int  ProfileImage { get; set; }
     }
 }

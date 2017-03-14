@@ -51,8 +51,18 @@
     <Compile Include="Base\DatabaseFactory.cs" />
     <Compile Include="Base\IBaseRepository.cs" />
     <Compile Include="Base\UnitofWork.cs" />
-    <Compile Include="Class1.cs" />
+    <Compile Include="Data\ILeagueRepository.cs" />
+    <Compile Include="Data\LeagueRepository.cs" />
     <Compile Include="Data\UserRepository.cs" />
+    <Compile Include="Model\League.cs" />
+    <Compile Include="Model\LeagueScoreCard.cs" />
+    <Compile Include="Model\Match.cs" />
+    <Compile Include="Model\Player.cs" />
+    <Compile Include="Model\PlayerScoreCard.cs" />
+    <Compile Include="Model\Team.cs" />
+    <Compile Include="Model\TeamPlayer.cs" />
+    <Compile Include="Model\Tournament.cs" />
+    <Compile Include="Model\TournamentTeam.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

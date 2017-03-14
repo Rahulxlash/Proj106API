@@ -21,7 +21,9 @@ namespace Cricketta.API
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
-            config.Routes.MapHttpRoute("DefaultApiWithAction", "Api/{controller}/{action}/{value}");
+            config.Routes.MapHttpRoute("AdvancePathMapping", "api/{controller}/{id}/{action}", defaults: new { id = RouteParameter.Optional });
+
+           // config.Routes.MapHttpRoute("DefaultApiWithAction", "Api/{controller}/{action}/{value}");
 
             var jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();
             jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
@@ -36,6 +38,7 @@ namespace Cricketta.API
             container.RegisterType<IUnitofWork, UnitofWork>(new HierarchicalLifetimeManager());
             container.RegisterType<IDatabaseFactory, DatabaseFactory>(new HierarchicalLifetimeManager());
             container.RegisterType<IUserRepository, UserRepository>(new HierarchicalLifetimeManager());
+            container.RegisterType<ILeagueRepository, LeagueRepository>(new HierarchicalLifetimeManager());
 
             config.DependencyResolver = new UnityResolver(container);
         }

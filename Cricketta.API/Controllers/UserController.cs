@@ -20,10 +20,13 @@ namespace Cricketta.API.Controllers
         public IUserRepository userRepository {get;set;}
         [Dependency]
         public IUnitofWork unitofWork { get; set; }
+        [Dependency]
+        public ILeagueRepository leagueRepository { get; set; }
 
         public UserController(IUnitofWork unitofWork, IUserRepository userRepository)
         {
             this.userRepository = userRepository;
+            this.leagueRepository = leagueRepository;
             this.unitofWork = unitofWork;
         }
 
@@ -38,15 +41,15 @@ namespace Cricketta.API.Controllers
             return Ok(user);
         }
 
-        public async Task<IHttpActionResult> GetByFBId(string value)
+        public async Task<IHttpActionResult> GetByFBId(string id)
         {
-            var user = userRepository.GetMany(u => u.FacebookId == value).FirstOrDefault();
+            var user = userRepository.GetMany(u => u.FacebookId == id).FirstOrDefault();
             return Ok(user);
         }
 
-        public async Task<IHttpActionResult> GetByUserName(string value)
+        public async Task<IHttpActionResult> GetByUserName(string id)
         {
-            var user = userRepository.GetMany(u => u.UserName.Trim().ToLower() == value.ToLower()).FirstOrDefault();
+            var user = userRepository.GetMany(u => u.UserName.Trim().ToLower() == id.ToLower()).FirstOrDefault();
             return Ok(user);
         }
 
@@ -61,6 +64,12 @@ namespace Cricketta.API.Controllers
 
             unitofWork.SaveChanges();
             return Ok(obj);
+        }
+        [HttpGet]
+        public async Task<IHttpActionResult> League(int id)
+        {
+            var leagues = leagueRepository.GetMany(l => l.Creator == id || l.Competitor == id);
+            return Ok(leagues);
         }
     }
 }

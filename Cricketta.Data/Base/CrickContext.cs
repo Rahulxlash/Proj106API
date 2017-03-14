@@ -17,5 +17,6 @@ namespace Cricketta.Data.Base
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<League> Leagues { get; set; }
     }
 }

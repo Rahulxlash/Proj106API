@@ -14,8 +14,9 @@ namespace Cricketta.API
     {
         public static void Register(HttpConfiguration config)
         {
+           
             config.MapHttpAttributeRoutes();
-          
+
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
@@ -23,24 +24,24 @@ namespace Cricketta.API
             );
             config.Routes.MapHttpRoute("AdvancePathMapping", "api/{controller}/{id}/{action}", defaults: new { id = RouteParameter.Optional });
 
-           // config.Routes.MapHttpRoute("DefaultApiWithAction", "Api/{controller}/{action}/{value}");
+            // config.Routes.MapHttpRoute("DefaultApiWithAction", "Api/{controller}/{action}/{value}");
+            var container = new UnityContainer();
+            SetDependency(container);
+            config.DependencyResolver = new UnityResolver(container);
 
             var jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();
             jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-
-            SetDependency(config);
+            
+            GlobalConfiguration.Configuration.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
+            config.Filters.Add(new ExceptionHandlingAttribute());
         }
 
-        private static void SetDependency(HttpConfiguration config)
+        private static void SetDependency(IUnityContainer container)
         {
-            var container = new UnityContainer();
-
             container.RegisterType<IUnitofWork, UnitofWork>(new HierarchicalLifetimeManager());
             container.RegisterType<IDatabaseFactory, DatabaseFactory>(new HierarchicalLifetimeManager());
             container.RegisterType<IUserRepository, UserRepository>(new HierarchicalLifetimeManager());
             container.RegisterType<ILeagueRepository, LeagueRepository>(new HierarchicalLifetimeManager());
-
-            config.DependencyResolver = new UnityResolver(container);
         }
     }
 }

@@ -17,22 +17,38 @@ namespace Cricketta.API.Controllers
     public class UserController : ApiController
     {
         [Dependency]
-        public IUserRepository userRepository {get;set;}
-        [Dependency]
         public IUnitofWork unitofWork { get; set; }
+     
         [Dependency]
+        public IUserRepository userRepository {get;set;}
+          [Dependency]
         public ILeagueRepository leagueRepository { get; set; }
 
-        public UserController(IUnitofWork unitofWork, IUserRepository userRepository)
+        public UserController()
         {
-            this.userRepository = userRepository;
-            this.leagueRepository = leagueRepository;
-            this.unitofWork = unitofWork;
+            //this.userRepository = userRepository;
+            //this.leagueRepository = leagueRepository;
+            //this.unitofWork = unitofWork;
         }
 
         public async Task<IHttpActionResult> Get()
         {
-            return Ok(userRepository.GetAll());
+            try
+            {
+                return Ok(userRepository.GetAll());
+            }
+            catch(Exception ex)
+            {
+                //string filePath = @"Error.txt";
+
+                //using (StreamWriter writer = new StreamWriter(filePath, true))
+                //{
+                //    writer.WriteLine("Message :" + ex.Message + "<br/>" + Environment.NewLine + "StackTrace :" + ex.StackTrace +
+                //       "" + Environment.NewLine + "Date :" + DateTime.Now.ToString());
+                //    writer.WriteLine(Environment.NewLine + "-----------------------------------------------------------------------------" + Environment.NewLine);
+                //}
+                return Ok(ex.Message);
+            }
         }
 
         public async Task<IHttpActionResult> Get(int Id)

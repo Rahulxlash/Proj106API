@@ -1,6 +1,8 @@
 ﻿using Cricketta.Data.Base;
 using Cricketta.Data.Data;
 using Microsoft.Practices.Unity;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
@@ -14,7 +16,6 @@ namespace Cricketta.API
     {
         public static void Register(HttpConfiguration config)
         {
-           
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
@@ -28,6 +29,10 @@ namespace Cricketta.API
             var container = new UnityContainer();
             SetDependency(container);
             config.DependencyResolver = new UnityResolver(container);
+
+            JsonSerializerSettings serializerSettings = new JsonSerializerSettings();
+            serializerSettings.Converters.Add(new IsoDateTimeConverter());
+            GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings = serializerSettings;
 
             var jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();
             jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();

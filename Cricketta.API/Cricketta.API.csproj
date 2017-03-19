@@ -107,6 +107,7 @@
     <Compile Include="Controllers\LeagueController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="ExceptionHandellingAttribute.cs" />
+    <Compile Include="Models\LeagueModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />

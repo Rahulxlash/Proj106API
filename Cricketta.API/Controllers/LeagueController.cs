@@ -1,5 +1,7 @@
-﻿using Cricketta.Data.Base;
+﻿using Cricketta.API.Models;
+using Cricketta.Data.Base;
 using Cricketta.Data.Data;
+using Cricketta.Data.Model;
 using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
@@ -34,5 +36,25 @@ namespace Cricketta.API.Controllers
             return Ok(leagueRepository.GetById(id));
         }
 
+        public async Task<IHttpActionResult> GetByName(String id)
+        {
+            return Ok(leagueRepository.GetMany(l => l.Name.ToLower() == id.ToLower()));
+        }
+
+        public async Task<IHttpActionResult> Post(LeagueModel model)
+        {
+            var obj = new League
+            {
+                Name = model.Name,
+                Competitor = model.Competitor,
+                Creator = model.Creator,
+                CreateDate = DateTime.Now.Date,
+                Accepted = false
+            };
+
+            var league = leagueRepository.Add(obj);
+            unitofWork.SaveChanges();
+            return Ok(league);
+        }
     }
 }

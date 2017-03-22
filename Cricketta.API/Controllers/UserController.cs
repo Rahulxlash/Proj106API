@@ -18,10 +18,10 @@ namespace Cricketta.API.Controllers
     {
         [Dependency]
         public IUnitofWork unitofWork { get; set; }
-     
+
         [Dependency]
-        public IUserRepository userRepository {get;set;}
-          [Dependency]
+        public IUserRepository userRepository { get; set; }
+        [Dependency]
         public ILeagueRepository leagueRepository { get; set; }
 
         public UserController()
@@ -37,7 +37,7 @@ namespace Cricketta.API.Controllers
             {
                 return Ok(userRepository.GetAll());
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 //string filePath = @"Error.txt";
 
@@ -84,8 +84,34 @@ namespace Cricketta.API.Controllers
         [HttpGet]
         public async Task<IHttpActionResult> League(int id)
         {
-            var leagues = leagueRepository.GetMany(l => l.Creator == id || l.Competitor == id);
-            return Ok(leagues);
+            List<LeagueModel> result = new List<LeagueModel>();
+            var leagues = leagueRepository.GetMany(l => l.Creator == id || l.Competitor == id).ToList();
+            foreach (var league in leagues)
+            {
+                String compName;
+                if (id == league.Creator)
+                {
+                    compName = userRepository.GetById(league.Competitor).UserName;
+                }
+                else
+                {
+                    compName = userRepository.GetById(id).UserName;
+                }
+
+                var lgModel = new LeagueModel()
+                {
+                    LeagueId = league.LeagueId,
+                    Name = league.Name,
+                    Creator = league.Creator,
+                    Competitor = league.Competitor.ToString().Trim(),
+                    Accepted = league.Accepted,
+                    CompetitorName = compName.Trim(),
+                    Points = league.Points,
+                    IsMyLeague = (id == league.Creator)
+                };
+                result.Add(lgModel);
+            }
+            return Ok(result);
         }
     }
 }

@@ -16,14 +16,14 @@ namespace Cricketta.API.Controllers
     public class LeagueController : ApiController
     {
         [Dependency]
-        public ILeagueRepository leagueRepository {get;set;}
+        public ILeagueRepository leagueRepository { get; set; }
+        [Dependency]
+        public IUserRepository userRepository { get; set; }
         [Dependency]
         public IUnitofWork unitofWork { get; set; }
 
-        public LeagueController(IUnitofWork unitofWork, ILeagueRepository leagueRepository)
+        public LeagueController()
         {
-            this.leagueRepository = leagueRepository;
-            this.unitofWork = unitofWork;
         }
 
         public async Task<IHttpActionResult> Get()
@@ -43,16 +43,39 @@ namespace Cricketta.API.Controllers
 
         public async Task<IHttpActionResult> Post(LeagueModel model)
         {
+            String compid = model.Competitor.ToString();
+            var appUser = userRepository.GetMany(u => u.FacebookId == compid).FirstOrDefault();
+
             var obj = new League
             {
                 Name = model.Name,
-                Competitor = model.Competitor,
+                Competitor = appUser.UserId,
                 Creator = model.Creator,
                 CreateDate = DateTime.Now.Date,
-                Accepted = false
+                Accepted = 0
             };
 
             var league = leagueRepository.Add(obj);
+            unitofWork.SaveChanges();
+            return Ok(league);
+        }
+
+        [HttpPost]
+        public async Task<IHttpActionResult> Accept(int id)
+        {
+            var league = leagueRepository.GetById(id);
+            league.Accepted = 1;
+            leagueRepository.Update(league);
+            unitofWork.SaveChanges();
+            return Ok(league);
+        }
+
+        [HttpPost]
+        public async Task<IHttpActionResult> Reject(int id)
+        {
+            var league = leagueRepository.GetById(id);
+            league.Accepted = 2;
+            leagueRepository.Update(league);
             unitofWork.SaveChanges();
             return Ok(league);
         }

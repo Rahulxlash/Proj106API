@@ -24,6 +24,7 @@ namespace Cricketta.API
                 defaults: new { id = RouteParameter.Optional }
             );
             config.Routes.MapHttpRoute("AdvancePathMapping", "api/{controller}/{id}/{action}", defaults: new { id = RouteParameter.Optional });
+            config.Routes.MapHttpRoute("AdvancePathMapping2", "api/{controller}/{id}/{action}/{value}", defaults: new { id = RouteParameter.Optional, value= RouteParameter.Optional });
 
             // config.Routes.MapHttpRoute("DefaultApiWithAction", "Api/{controller}/{action}/{value}");
             var container = new UnityContainer();
@@ -47,6 +48,11 @@ namespace Cricketta.API
             container.RegisterType<IDatabaseFactory, DatabaseFactory>(new HierarchicalLifetimeManager());
             container.RegisterType<IUserRepository, UserRepository>(new HierarchicalLifetimeManager());
             container.RegisterType<ILeagueRepository, LeagueRepository>(new HierarchicalLifetimeManager());
+            container.RegisterType<ILeagueMatchRepository, LeagueMatchRepository>(new HierarchicalLifetimeManager());
+            container.RegisterType<IMatchRepository, MatchRepository>(new HierarchicalLifetimeManager());
+            container.RegisterType<ITeamRepository, TeamRepository>(new HierarchicalLifetimeManager());
         }
     }
 }
+
+

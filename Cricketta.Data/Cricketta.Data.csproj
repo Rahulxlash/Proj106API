@@ -51,10 +51,13 @@
     <Compile Include="Base\DatabaseFactory.cs" />
     <Compile Include="Base\IBaseRepository.cs" />
     <Compile Include="Base\UnitofWork.cs" />
-    <Compile Include="Data\ILeagueRepository.cs" />
+    <Compile Include="Data\LeagueMatchRepository.cs" />
     <Compile Include="Data\LeagueRepository.cs" />
+    <Compile Include="Data\MatchRepository.cs" />
+    <Compile Include="Data\TeamRepository.cs" />
     <Compile Include="Data\UserRepository.cs" />
     <Compile Include="Model\League.cs" />
+    <Compile Include="Model\LeagueMatch.cs" />
     <Compile Include="Model\LeagueScoreCard.cs" />
     <Compile Include="Model\Match.cs" />
     <Compile Include="Model\Player.cs" />

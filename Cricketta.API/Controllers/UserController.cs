@@ -86,6 +86,9 @@ namespace Cricketta.API.Controllers
         {
             List<LeagueModel> result = new List<LeagueModel>();
             var leagues = leagueRepository.GetMany(l => l.Creator == id || l.Competitor == id).ToList();
+
+
+
             foreach (var league in leagues)
             {
                 String compName;
@@ -95,7 +98,7 @@ namespace Cricketta.API.Controllers
                 }
                 else
                 {
-                    compName = userRepository.GetById(id).UserName;
+                    compName = userRepository.GetById(league.Creator).UserName;
                 }
 
                 var lgModel = new LeagueModel()

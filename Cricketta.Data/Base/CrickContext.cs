@@ -26,5 +26,8 @@ namespace Cricketta.Data.Base
         }
         public DbSet<User> Users { get; set; }
         public DbSet<League> Leagues { get; set; }
+        public DbSet<LeagueMatch> LeagueMatches { get; set; }
+        public DbSet<Match> Matches { get; set; }
+        public DbSet<Team> Teams { get; set; }
     }
 }

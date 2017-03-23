@@ -16,5 +16,7 @@ namespace Cricketta.Data.Model
         public int TournamentId { get; set; }
         public int Accepted { get; set; }
         public int Points { get; set; }
+        public int CreatorPoint { get; set; }
+        public int CompetitorPoint { get; set; }
     }
 }

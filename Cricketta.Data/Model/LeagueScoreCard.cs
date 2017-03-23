@@ -17,5 +17,6 @@ namespace Cricketta.Data.Model
         public Boolean Extra { get; set; }
         public int Run { get; set; }
         public int Wicket { get; set; }
+        public bool isPlaying { get; set; }
     }
 }

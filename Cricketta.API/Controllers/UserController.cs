@@ -116,5 +116,36 @@ namespace Cricketta.API.Controllers
             }
             return Ok(result);
         }
+
+        [HttpPost]
+        public IHttpActionResult RegisterDevice(RegisterDeviceModel model)
+        {
+            var user = userRepository.GetById(model.UserId);
+            if (user.DeviceToken != null && user.DeviceToken != string.Empty)
+            {
+                if (!user.DeviceToken.Contains(model.DeviceToken))
+                    if (user.DeviceToken.Length > 200)
+                        user.DeviceToken = model.DeviceToken;
+                    else
+                        user.DeviceToken = user.DeviceToken + "," + model.DeviceToken;
+            }
+            else
+                user.DeviceToken = model.DeviceToken;
+
+            userRepository.Update(user);
+            unitofWork.SaveChanges();
+            return Ok();
+        }
+
+        [HttpPost]
+        public IHttpActionResult UnRegisterDevice(RegisterDeviceModel model)
+        {
+            var user = userRepository.GetById(model.UserId);
+            user.DeviceToken=null;
+
+            userRepository.Update(user);
+            unitofWork.SaveChanges();
+            return Ok();
+        }
     }
 }

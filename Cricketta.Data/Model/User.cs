@@ -17,5 +17,6 @@ namespace Cricketta.Data.Model
 
         public int ProfileImage { get; set; }
 
+        public String DeviceToken { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Cricketta.API.Helpers;
 using Cricketta.API.Models;
+using Cricketta.Data.Base;
 using Cricketta.Data.Data;
 using Microsoft.Practices.Unity;
 using System;
@@ -19,10 +20,12 @@ namespace Cricketta.API.Controllers
         public ILeagueRepository leagueRepository { get; set; }
         [Dependency]
         public IUserRepository userRepository { get; set; }
+        [Dependency]
+        public IUnitofWork unitOfWork { get; set; }
 
-        public IHttpActionResult Get(int Id)
+        public IHttpActionResult Get(int id)
         {
-            var leagueMatch = leagueMatchRepository.GetById(Id);
+            var leagueMatch = leagueMatchRepository.GetById(id);
             return Ok(leagueMatch);
         }
 
@@ -42,6 +45,7 @@ namespace Cricketta.API.Controllers
             obj.Payload = new TossPayload
             {
                 Tag = "TOSS_REQUEST",
+                click_action = "MAIN_NOTIFICATION",
                 userId = value,
                 matchId = match.LeagueMatchId
             };
@@ -50,8 +54,55 @@ namespace Cricketta.API.Controllers
                 NotificationHelper.sendNotification(getUserDeviceId(league.Competitor), obj);
             else
                 NotificationHelper.sendNotification(getUserDeviceId(league.Creator), obj);
+            var leagueMatch = leagueMatchRepository.GetById(Id);
+
+            leagueMatch.Toss = -1;
+            leagueMatch.TossRequestedBy = value;
+            leagueMatchRepository.Update(leagueMatch);
+            unitOfWork.SaveChanges();
+
 
             return Ok();
+        }
+
+        [HttpPost]
+        public IHttpActionResult DoToss(int Id, int value)//1 for head and 2 for tail
+        {
+            var match = leagueMatchRepository.GetById(Id);
+            var league = leagueRepository.GetById(match.LeagueId);
+            var isMyLeague = league.Creator != match.TossRequestedBy;
+
+            var Result = 0;
+            var rand = new Random().Next(int.MinValue, int.MaxValue);
+            if (rand % 2 == 0)
+                Result = 1;//Head
+            else
+                Result = 2;//Tail
+
+            if (value == Result)
+            {
+                if (isMyLeague)
+                    match.Toss = 1;
+                else
+                    match.Toss = 2;
+            }
+            else
+            {
+                if (isMyLeague)
+                    match.Toss = 2;
+                else
+                    match.Toss = 1;
+            }
+
+            match.TossDone = true;
+            leagueMatchRepository.Update(match);
+            unitOfWork.SaveChanges();
+
+            return Ok(new
+            {
+                Result = Result,
+                Value = (Result == 1 ? "Head" : "Tail")
+            });
         }
 
         private string getUserDeviceId(int userId)

@@ -61,13 +61,13 @@ namespace Cricketta.API.Controllers
                 Creator = league.Creator,
                 CreatorPoint = (isMyLeague ? league.CreatorPoint : league.CompetitorPoint),
                 IsMyLeague = isMyLeague,
-                CompetitorFBId = CompUser.FacebookId.Trim()
+                CompetitorFBId = CompUser.FacebookId.Trim(),
             };
 
             return Ok(result);
         }
 
-        private static void swapValues(List<LeagueMatch> leagueMatches, bool isMyLeague)
+        private static void swapValues(List<LeagueMatch> leagueMatches, bool isMyLeague )
         {
             if (!isMyLeague)
             {

@@ -13,6 +13,7 @@ namespace Cricketta.Data.Model
         public String Name { get; set; }
 
         public String Logo { get; set; }
+
         public String ShortName { get; set; }
     }
 }

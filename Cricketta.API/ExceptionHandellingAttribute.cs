@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -30,14 +32,20 @@ namespace Cricketta.API
             //    ReasonPhrase = "Critical Exception"
             //});
             Exception ex = context.Exception;
-            string filePath = @"Error.txt";
+            SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["CrickContext"].ToString());
+            connection.Open();
+            SqlCommand cmd = new SqlCommand("Insert into ErrorLog values('" + ex.Message.Substring(0, (ex.Message.Length > 400 ? 399 : ex.Message.Length)) + "',getdate(),'" + ex.StackTrace.Substring(0, (ex.StackTrace.Length > 999 ? 999 : ex.StackTrace.Length)) + "')", connection);
+            cmd.ExecuteNonQuery();
+            connection.Close();
 
-            using (StreamWriter writer = new StreamWriter(filePath, true))
-            {
-                writer.WriteLine("Message :" + ex.Message + "<br/>" + Environment.NewLine + "StackTrace :" + ex.StackTrace +
-                   "" + Environment.NewLine + "Date :" + DateTime.Now.ToString());
-                writer.WriteLine(Environment.NewLine + "-----------------------------------------------------------------------------" + Environment.NewLine);
-            }
+            //string filePath = @"Error.txt";
+
+            //using (StreamWriter writer = new StreamWriter(filePath, true))
+            //{
+            //    writer.WriteLine("Message :" + ex.Message + "<br/>" + Environment.NewLine + "StackTrace :" + ex.StackTrace +
+            //       "" + Environment.NewLine + "Date :" + DateTime.Now.ToString());
+            //    writer.WriteLine(Environment.NewLine + "-----------------------------------------------------------------------------" + Environment.NewLine);
+            //}
         }
     }
 }

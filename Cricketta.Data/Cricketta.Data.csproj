@@ -36,6 +36,9 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -53,7 +56,10 @@
     <Compile Include="Base\UnitofWork.cs" />
     <Compile Include="Data\LeagueMatchRepository.cs" />
     <Compile Include="Data\LeagueRepository.cs" />
+    <Compile Include="Data\LeagueScoreCardRepository.cs" />
     <Compile Include="Data\MatchRepository.cs" />
+    <Compile Include="Data\PlayerRepository.cs" />
+    <Compile Include="Data\TeamPlayerRepository.cs" />
     <Compile Include="Data\TeamRepository.cs" />
     <Compile Include="Data\UserRepository.cs" />
     <Compile Include="Model\League.cs" />

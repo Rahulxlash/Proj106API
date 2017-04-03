@@ -51,6 +51,9 @@ namespace Cricketta.API
             container.RegisterType<ILeagueMatchRepository, LeagueMatchRepository>(new HierarchicalLifetimeManager());
             container.RegisterType<IMatchRepository, MatchRepository>(new HierarchicalLifetimeManager());
             container.RegisterType<ITeamRepository, TeamRepository>(new HierarchicalLifetimeManager());
+            container.RegisterType<IPlayerRepository, PlayerRepository>(new HierarchicalLifetimeManager());
+            container.RegisterType<ITeamPlayerRepository, TeamPlayerRepository>(new HierarchicalLifetimeManager());
+            container.RegisterType<ILeagueScoreCardRepository, LeagueScoreCardRepository>(new HierarchicalLifetimeManager());
         }
     }
 }

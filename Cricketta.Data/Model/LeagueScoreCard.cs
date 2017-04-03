@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Cricketta.Data.Model
 {
+    [Table("LeagueScoreCard")]
     public class LeagueScoreCard
     {
+        [Key]
         public int RecordId { get; set; }
         public int LeagueId { get; set; }
         public int TournamentId { get; set; }

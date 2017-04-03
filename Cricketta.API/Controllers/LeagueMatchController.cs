@@ -21,6 +21,12 @@ namespace Cricketta.API.Controllers
         [Dependency]
         public IUserRepository userRepository { get; set; }
         [Dependency]
+        public IPlayerRepository playerRepository { get; set; }
+        [Dependency]
+        public ITeamPlayerRepository teamPlayerRepository { get; set; }
+        [Dependency]
+        public ILeagueScoreCardRepository scoreCardRepository { get; set; }
+        [Dependency]
         public IUnitofWork unitOfWork { get; set; }
 
         public IHttpActionResult Get(int id)
@@ -98,12 +104,76 @@ namespace Cricketta.API.Controllers
             leagueMatchRepository.Update(match);
             unitOfWork.SaveChanges();
 
+            Notification obj = new Notification();
+            obj.Title = league.Name.Trim();
+            obj.Message = "Toss " + (value == Result ? "Lost " : "Won ") + match.TeamName1.Trim() + " vs " + match.TeamName2.Trim() + " " + match.MatchDate.ToShortDateString();
+            obj.Payload = new TossPayload
+            {
+                Tag = "TOSS_DONE",
+                click_action = "MAIN_NOTIFICATION",
+                userId = value,
+                matchId = match.LeagueMatchId
+            };
+            if (isMyLeague)
+                NotificationHelper.sendNotification(getUserDeviceId(league.Competitor), obj);
+            else
+                NotificationHelper.sendNotification(getUserDeviceId(league.Creator), obj);
+
             return Ok(new
             {
                 Result = Result,
                 Value = (Result == 1 ? "Head" : "Tail")
             });
         }
+
+        public IHttpActionResult getAllPlayers(int Id)
+        {
+            var leagueMatch = leagueMatchRepository.GetById(Id);
+            var teamPlayer = teamPlayerRepository.GetMany(tp => tp.TeamId == leagueMatch.TeamId1 || tp.TeamId == leagueMatch.TeamId2);
+            var players = playerRepository.GetMany(p => teamPlayer.Any(tp => p.PlayerId == tp.PlayerId));
+
+            var selectedPlayers = scoreCardRepository.GetMany(sc => sc.MatchId == leagueMatch.MatchId && sc.LeagueId == leagueMatch.LeagueId).ToList();
+            var remainPlayer = players.Where(p => !selectedPlayers.Any(sp => p.PlayerId == sp.PlayerId));
+
+            return Ok(remainPlayer);
+        }
+
+        public IHttpActionResult getScoreCard(int Id, int value)
+        {
+            var leagueMatch = leagueMatchRepository.GetById(Id);
+            var selectedPlayers = scoreCardRepository.GetMany(sc => sc.MatchId == leagueMatch.MatchId && sc.LeagueId == leagueMatch.LeagueId);
+            //var players = playerRepository.GetMany(p => selectedPlayers.Any(sp => p.PlayerId == sp.PlayerId));
+
+            List<PlayerModel> data = new List<PlayerModel>();
+
+            foreach(var card in selectedPlayers)
+            {
+                var player = playerRepository.GetById(card.PlayerId);
+                var obj = new PlayerModel
+                {
+                    PlayerId = card.PlayerId,
+                    Name = player.Name.Trim(),
+                    Run = card.Run,
+                    Wicket = card.Wicket,
+                    Bat = player.Bat,
+                    Bowl = player.Bowl,
+                    Captain = player.Captain,
+                    isExtra = card.Extra,
+                    isPlaying = card.isPlaying,
+                    Keeper = player.Keeper,
+                    MatchId = card.MatchId,
+                    UserId = card.UserId
+                };
+                data.Add(obj);
+            }
+            return Ok(data);
+        }
+
+        //[HttpPost]
+        //public IHttpActionResult selectTeamPlayer()
+        //{
+
+        //}
 
         private string getUserDeviceId(int userId)
         {

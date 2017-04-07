@@ -1,4 +1,5 @@
-﻿using Cricketta.API.Models;
+﻿using Cricketta.API.Helpers;
+using Cricketta.API.Models;
 using Cricketta.Data.Base;
 using Cricketta.Data.Data;
 using Cricketta.Data.Model;
@@ -103,7 +104,7 @@ namespace Cricketta.API.Controllers
             //Add New League
             String compid = model.Competitor.ToString();
             var appUser = userRepository.GetMany(u => u.FacebookId == compid).FirstOrDefault();
-
+            var creator = userRepository.GetById(model.Creator);
             var obj = new League
             {
                 Name = model.Name,
@@ -138,7 +139,23 @@ namespace Cricketta.API.Controllers
                 leagueMatchRepository.Add(lm);
             }
 
+          
+
             unitofWork.SaveChanges();
+
+            Notification notif = new Notification()
+            {
+                Title = creator.UserName,
+                Message = "New Challange from " + creator.UserName + "- " + league.Name,
+                Payload = new ChallangePayload()
+                {
+                    leagueId = league.LeagueId,
+                    Tag = "LEAGUE_CHALLANGE",
+                    userId = model.Creator
+                }
+            };
+
+            NotificationHelper.sendNotification(appUser.DeviceToken, notif);
             return Ok(league);
         }
 

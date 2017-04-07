@@ -51,7 +51,6 @@ namespace Cricketta.API.Controllers
             obj.Payload = new TossPayload
             {
                 Tag = "TOSS_REQUEST",
-                click_action = "MAIN_NOTIFICATION",
                 userId = value,
                 matchId = match.LeagueMatchId
             };
@@ -110,7 +109,6 @@ namespace Cricketta.API.Controllers
             obj.Payload = new TossPayload
             {
                 Tag = "TOSS_DONE",
-                click_action = "MAIN_NOTIFICATION",
                 userId = value,
                 matchId = match.LeagueMatchId
             };

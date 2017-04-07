@@ -69,7 +69,7 @@ namespace Cricketta.API.Controllers
             return Ok(user);
         }
 
-        public async Task<IHttpActionResult> Post(UserModel user)
+        public async Task<IHttpActionResult> RegisterUser(UserModel user)
         {
             var obj = userRepository.Add(new User
             {
@@ -134,7 +134,7 @@ namespace Cricketta.API.Controllers
 
             userRepository.Update(user);
             unitofWork.SaveChanges();
-            return Ok();
+            return Ok(user);
         }
 
         [HttpPost]
@@ -145,7 +145,7 @@ namespace Cricketta.API.Controllers
 
             userRepository.Update(user);
             unitofWork.SaveChanges();
-            return Ok();
+            return Ok(user);
         }
     }
 }

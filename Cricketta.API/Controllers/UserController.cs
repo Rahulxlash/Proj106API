@@ -92,13 +92,16 @@ namespace Cricketta.API.Controllers
             foreach (var league in leagues)
             {
                 String compName;
+                String compFBId;
                 if (id == league.Creator)
                 {
                     compName = userRepository.GetById(league.Competitor).UserName;
+                    compFBId = userRepository.GetById(league.Competitor).FacebookId;
                 }
                 else
                 {
                     compName = userRepository.GetById(league.Creator).UserName;
+                    compFBId = userRepository.GetById(league.Creator).FacebookId;
                 }
 
                 var lgModel = new LeagueModel()
@@ -107,6 +110,7 @@ namespace Cricketta.API.Controllers
                     Name = league.Name,
                     Creator = league.Creator,
                     Competitor = league.Competitor.ToString().Trim(),
+                    CompetitorFBId = compFBId,
                     Accepted = league.Accepted,
                     CompetitorName = compName.Trim(),
                     Points = league.Points,
@@ -121,15 +125,15 @@ namespace Cricketta.API.Controllers
         public IHttpActionResult RegisterDevice(RegisterDeviceModel model)
         {
             var user = userRepository.GetById(model.UserId);
-            if (user.DeviceToken != null && user.DeviceToken != string.Empty)
-            {
-                if (!user.DeviceToken.Contains(model.DeviceToken))
-                    if (user.DeviceToken.Length > 200)
-                        user.DeviceToken = model.DeviceToken;
-                    else
-                        user.DeviceToken = user.DeviceToken + "," + model.DeviceToken;
-            }
-            else
+            //if (user.DeviceToken != null && user.DeviceToken != string.Empty)
+            //{
+            //    if (!user.DeviceToken.Contains(model.DeviceToken))
+            //        if (user.DeviceToken.Length > 200)
+            //            user.DeviceToken = model.DeviceToken;
+            //        else
+            //            user.DeviceToken = user.DeviceToken + "," + model.DeviceToken;
+            //}
+            //else
                 user.DeviceToken = model.DeviceToken;
 
             userRepository.Update(user);

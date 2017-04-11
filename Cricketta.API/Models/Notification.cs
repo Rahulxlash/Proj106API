@@ -31,4 +31,12 @@ namespace Cricketta.API.Models
         public int userId { get; set; }
         public int matchId { get; set; }
     }
+
+    public class PlayerSelectedMessage : IPayload
+    {
+        public string Tag { get; set; }
+        public int userId { get; set; }
+        public int playerId { get; set; }
+        public int leagueMatchId { get; set; }
+    }
 }

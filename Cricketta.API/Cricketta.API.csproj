@@ -118,6 +118,7 @@
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="ExceptionHandellingAttribute.cs" />
     <Compile Include="Helpers\NotificationHelper.cs" />
+    <Compile Include="Models\AddPlayerModel.cs" />
     <Compile Include="Models\LeagueModel.cs" />
     <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\PlayerModel.cs" />

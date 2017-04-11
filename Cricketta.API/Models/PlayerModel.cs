@@ -19,5 +19,6 @@ namespace Cricketta.API.Models
         public Boolean Bowl { get; set; }
         public Boolean Keeper { get; set; }
         public Boolean Captain { get; set; }
+        public String Photo { get; set; }
     }
 }

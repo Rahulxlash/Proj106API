@@ -68,7 +68,7 @@ namespace Cricketta.API.Controllers
             return Ok(result);
         }
 
-        private static void swapValues(List<LeagueMatch> leagueMatches, bool isMyLeague )
+        private static void swapValues(List<LeagueMatch> leagueMatches, bool isMyLeague)
         {
             if (!isMyLeague)
             {
@@ -139,8 +139,6 @@ namespace Cricketta.API.Controllers
                 leagueMatchRepository.Add(lm);
             }
 
-          
-
             unitofWork.SaveChanges();
 
             Notification notif = new Notification()
@@ -166,6 +164,24 @@ namespace Cricketta.API.Controllers
             league.Accepted = 1;
             leagueRepository.Update(league);
             unitofWork.SaveChanges();
+            var creator = userRepository.GetById(league.Creator);
+            var comp = userRepository.GetById(league.Competitor);
+
+            Notification obj = new Notification()
+            {
+                Title = "Challange Accepted",
+                Message = league.Name + " accepted by " + comp.UserName,
+                Payload = new ChallangePayload()
+                {
+                    userId = league.Competitor,
+                    Tag = "CHALLANGE_ACCEPTED",
+                    leagueId = league.LeagueId
+                }
+            };
+
+
+            NotificationHelper.sendNotification(creator.DeviceToken, obj);
+
             return Ok(league);
         }
 
@@ -176,6 +192,23 @@ namespace Cricketta.API.Controllers
             league.Accepted = 2;
             leagueRepository.Update(league);
             unitofWork.SaveChanges();
+            var creator = userRepository.GetById(league.Creator);
+            var comp = userRepository.GetById(league.Competitor);
+
+            Notification obj = new Notification()
+            {
+                Title = "Challange Rejected",
+                Message = league.Name + " rejected by " + comp.UserName,
+                Payload = new ChallangePayload()
+                {
+                    userId = league.Competitor,
+                    Tag = "CHALLANGE_ACCEPTED",
+                    leagueId = league.LeagueId
+                }
+            };
+
+
+            NotificationHelper.sendNotification(creator.DeviceToken, obj);
             return Ok(league);
         }
     }

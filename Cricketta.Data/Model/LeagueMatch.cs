@@ -16,6 +16,7 @@ namespace Cricketta.Data.Model
         public bool TossDone { get; set; }
         public int Toss { get; set; } //0=Toss pending, -1 = request pending, 1 = creator, 2 = competitor
         public int TossRequestedBy { get; set; }
+        public bool TeamDone { get; set; }
         public int CreatorRun { get; set; }
         public int CreatorWicket { get; set; }
         public int CreatorPoint { get; set; }
@@ -26,6 +27,6 @@ namespace Cricketta.Data.Model
         public String Venue { get; set; }
         public string TeamName1 { get; set; }
         public string TeamName2 { get; set; }
-        
+
     }
 }
